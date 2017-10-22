@@ -1,0 +1,20 @@
+body,html,h1,h2,h3,h4,h5,ul,li,dl,dt,dd,p{padding:0;margin:0;}
+/*body,html{height:100%;}*/
+body{font-size:12px;font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+  text-align: center; color: #2c3e50;/*-webkit-overflow-scrolling:touch;*/
+}
+h1,h2,h3,h4,h5{font-weight: normal;}
+a{text-decoration: none;}
+i,em{font-style: normal;}
+*{box-sizing: border-box;}
+li{list-style: none;}
+
+
+
+.fl{float:left;}
+.fr{float:right;}
+.clearfix:after{content: '';clear: both;overflow: hidden;display: block;height: 0;}
+.textleft{text-align: left;}
+.textcenter{text-align: center;}
+.cursor{cursor: pointer;}
