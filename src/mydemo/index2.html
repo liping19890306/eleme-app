@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>jQuery UI 放置（Droppable） - 购物车演示</title>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
+	<script src="//code.jquery.com/jquery-1.9.1.js"></script>
+	<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+	
+	<link href="skin/css/bootstrap.min.css" rel="stylesheet">
+	<link href="skin/css/a-default.css" rel="stylesheet">
+	<link href="skin/css/a-style.css" rel="stylesheet">
+	
+	<link href="skin/css/a-layoutit.css" rel="stylesheet">
+    <link href="skin/css/default.css" rel="stylesheet">
+    <link href="skin/css/base.css" rel="stylesheet">
+    <link href="skin/css/list.css" rel="stylesheet">
+    <link href="skin/css/content.css" rel="stylesheet">
+	
+	<script type="text/javascript" src="skin/js/jquery.ui.touch-punch.min.js"></script>
+    <script type="text/javascript" src="skin/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="skin/js/jquery.htmlClean.js"></script>
+    <script type="text/javascript" src="skin/js/scripts.min.js"></script>
+	<style>
+		h1 { padding: .2em; margin: 0; }
+		/* 定义列表样式，以便最大化 droppable */
+		#cart ol { margin: 0; padding: 1em 0 1em 3em; }
+		
+		.ui-draggable, .ui-droppable {
+			background-position: top;
+		}
+	</style>
+  	<script>
+		$(function() {
+		    $( "#catalog" ).accordion();
+		    $( "#catalog li" ).draggable({
+			    appendTo: "body",
+			    helper: "clone"
+		    });
+		    //拖div
+		    $(".canvas").droppable({
+		    	activeClass: "ui-state-default",
+		    	hoverClass: "ui-state-hover",
+		    	accept: ":not(.ui-sortable-helper)",
+		    	drop: function( event, ui ) {
+		    		var type = ui.draggable.attr("type"); //被拖入控件的类型
+		    		if(type == "div"){
+			        	//$( this ).find( ".placeholder" ).remove();
+			        	$( "<div class='ui-widget-content'></div>" ).text( "可以拖入控件" ).appendTo( this );
+		    		}
+		    	}
+		    }).sortable({
+		        items: "th:not(.placeholder)",
+		        sort: function() {
+			        // 获取由 droppable 与 sortable 交互而加入的条目
+			        // 使用 connectWithSortable 可以解决这个问题，但不允许您自定义 active/hoverClass 选项
+		            $( this ).removeClass( "ui-state-default" );
+		        }
+		    });
+		    //拖table
+		    $( "#cart thead tr" ).droppable({
+		    	activeClass: "ui-state-default",
+		    	hoverClass: "ui-state-hover",
+		    	accept: ":not(.ui-sortable-helper)",
+		    	drop: function( event, ui ) {
+		    		var type = ui.draggable.attr("type"); //被拖入控件的类型
+		    		if(type == "column"){
+			        	$( this ).find( ".placeholder" ).remove();
+			        	$( "<th onclick='onSelectColumn(this);'></th>" ).text( ui.draggable.text() ).appendTo( this );
+		    		}
+		    	}
+		    }).sortable({
+		        items: "th:not(.placeholder)",
+		        sort: function() {
+			        // 获取由 droppable 与 sortable 交互而加入的条目
+			        // 使用 connectWithSortable 可以解决这个问题，但不允许您自定义 active/hoverClass 选项
+		            $( this ).removeClass( "ui-state-default" );
+		        }
+		    });
+		});
+		function onSelectColumn(obj){
+			$(obj).addClass("component-selected").siblings("th").removeClass("component-selected");
+			var html = '';
+			html += '<li><label>名称：</label><input type="text" /></li>';
+			html += '<li><label>数据来源：</label><select></select></li>';
+			html += '<button class="save-btn" onclick="saveAttr(this);">保存</button>';
+			$(".right-attr-list").html(html);
+		}
+		function saveAttr(obj){
+			alert("save");
+		}
+	</script>
+</head>
+<body class="edits">
+	<div class="header">
+		header
+	</div>
+	<div class="rows">
+		<!--左侧栏-->
+		<!--<div class="col-md-2" id="products">
+		    <h3 class="ui-widget-header">控件栏</h3>
+		    <div id="catalog">
+		    	<h2><a href="#">报表</a></h2>
+			    <div>
+				    <ul>
+				        <li type="div">div</li>
+				    </ul>
+			    </div>
+			    <h2><a href="#">表格columns</a></h2>
+			    <div>
+				    <ul>
+				        <li type="column">列1</li>
+				        <li type="column">列2</li>
+				    </ul>
+			    </div>
+			    <h2><a href="#">表单控件</a></h2>
+			    <div>
+				    <ul>
+				        <li>input</li>
+				        <li>select</li>
+				        <li>textarea</li>
+				    </ul>
+			    </div>
+			    <h2><a href="#">Gadgets</a></h2>
+			    <div>
+				    <ul>
+				        <li>iPhone</li>
+				        <li>iPod</li>
+				        <li>iPad</li>
+				    </ul>
+			    </div>
+		    </div>
+		</div>-->
+		<div class="sidebar-nav col-md-2">
+            <ul class="nav nav-list accordion-group">
+                <li class="nav-header">
+                    <i class="glyphicon-plus glyphicon"></i>  布局设置
+                    <div class="pull-right popover-info">
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                        <div class="popover fade right">
+                            <div class="arrow"></div>
+                            <h3 class="popover-title">提示：</h3>
+                            <div class="popover-content">在这里设置网站的布局, 包含多种排版形式，可任意组合多种不同的排版布局风格。 </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="rows" id="estRows">
+
+
+                    <div class="lyrow">
+                        <a rel="nofollow" href="#close" class="remove label label-danger"><i class="glyphicon-remove glyphicon"></i> 删除</a>
+                        <span class="drag label label-default"><i class="glyphicon glyphicon-move"></i> 拖动</span>
+                        <div class="preview"><input type="text" value="12" class="form-control"></div>
+                        <div class="view">
+                            <div class="row clearfix">
+                                <div class="col-md-12 column"></div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="lyrow">
+                        <a rel="nofollow" href="#close" class="remove label label-danger"><i class="glyphicon-remove glyphicon"></i> 删除</a>
+                        <span class="drag label label-default"><i class="glyphicon glyphicon-move"></i> 拖动</span>
+                        <div class="preview"><input type="text" value="6 6" class="form-control"></div>
+                        <div class="view">
+                            <div class="row clearfix">
+                                <div class="col-md-6 column"></div>
+                                <div class="col-md-6 column"></div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="lyrow">
+                        <a  rel="nofollow" href="#close" class="remove label label-danger"><i class="glyphicon-remove glyphicon"></i> 删除</a>
+                        <span class="drag label label-default"><i class="glyphicon glyphicon-move"></i> 拖动</span>
+                        <div class="preview"><input type="text" value="9 3" class="form-control"></div>
+                        <div class="view">
+                            <div class="row clearfix">
+                                <div class="col-md-9 column"></div>
+                                <div class="col-md-3 column"></div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="lyrow">
+                        <a  rel="nofollow" href="#close" class="remove label label-danger"><i class="glyphicon-remove glyphicon"></i> 删除</a>
+                        <span class="drag label label-default"><i class="glyphicon glyphicon-move"></i> 拖动</span>
+                        <div class="preview"><input type="text" value="8 4" class="form-control"></div>
+                        <div class="view">
+                            <div class="row clearfix">
+                                <div class="col-md-8 column"></div>
+                                <div class="col-md-4 column"></div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="lyrow">
+                        <a  rel="nofollow" href="#close" class="remove label label-danger"><i class="glyphicon-remove glyphicon"></i> 删除</a>
+                        <span class="drag label label-default"><i class="glyphicon glyphicon-move"></i> 拖动</span>
+                        <div class="preview"><input type="text" value="4 4 4" class="form-control"></div>
+                        <div class="view">
+                            <div class="row clearfix">
+                                <div class="col-md-4 column"></div>
+                                <div class="col-md-4 column"></div>
+                                <div class="col-md-4 column"></div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="lyrow">
+                        <a  rel="nofollow" href="#close" class="remove label label-danger"><i class="glyphicon-remove glyphicon"></i> 删除</a>
+                        <span class="drag label label-default"><i class="glyphicon glyphicon-move"></i> 拖动</span>
+                        <div class="preview"><input type="text" value="3 9" class="form-control"></div>
+                        <div class="view">
+                            <div class="row clearfix">
+                                <div class="col-sm-3 col-md-3 column"></div>
+                                <div class="col-sm-9 col-md-9 column"></div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+                    <div class="lyrow">
+                        <a  rel="nofollow" href="#close" class="remove label label-danger"><i class="glyphicon-remove glyphicon"></i> 删除</a>
+                        <span class="drag label label-default"><i class="glyphicon glyphicon-move"></i> 拖动</span>
+                        <div class="preview"><input type="text" value="2 6 4" class="form-control"></div>
+                        <div class="view">
+                            <div class="row clearfix">
+                                <div class="col-md-2 column"></div>
+                                <div class="col-md-6 column"></div>
+                                <div class="col-md-4 column"></div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </li>
+            </ul>
+            
+            <ul class="nav nav-list accordion-group">
+                <li class="nav-header">
+                    <i class="glyphicon-plus glyphicon"></i>  容器组件
+                    <div class="pull-right popover-info">
+                        <i class="glyphicon glyphicon-question-sign"></i>
+                        <div class="popover fade right">
+                            <div class="arrow"></div>
+                            <h3 class="popover-title">提示：</h3>
+                            <div class="popover-content">在这里拖动网页中的容器组件，比如table,div等。 </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="boxes" id="elmBase">
+                    <div class="box box-element">
+                        <a rel="nofollow" href="#close" class="remove label label-danger"><i class="glyphicon-remove glyphicon"></i> 删除</a>
+                        <span class="drag label label-default"><i class="glyphicon glyphicon-move"></i> 拖动</span>
+                        <div class="preview">表格table</div>
+                        <div class="view">
+                            <table style="border:1px solid #ccc;width:100%;">
+                            	<thead>
+                            		<tr>
+                            			
+                            		</tr>
+                            	</thead>
+                            </table>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+		
+			
+		<!--内容区-->
+		<!--<div class="col-md-8" id="cart">
+		    <h3 class="ui-widget-header">模板区</h3>
+		    <div class="canvas">
+			    <table class="ui-widget-content dropedTable">
+			    	<thead>
+					    <tr>
+					        <th class="placeholder">添加表格columns到这里</th>
+					    </tr>
+				    </thead>
+			    </table>
+		    </div>
+		</div>-->
+		<div class="demo col-md-8"></div>
+		<!--右侧栏-->
+		<div class="nav-right col-md-2">
+			<h3 class="ui-widget-header">属性编辑区</h3>
+			<ul class="right-attr-list">
+				<!--<li>
+					<label>名称：</label>
+					<input type="text" />
+				</li>-->
+			</ul>
+		</div>
+	</div>
+</body>
+</html>

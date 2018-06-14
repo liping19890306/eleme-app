@@ -9,7 +9,7 @@
                 <span class="fl title">{{ this.seller.name }}</span>
             </div>
             <div class="line2 textleft">{{ this.seller.description}}/{{ this.seller.deliveryTime }}分钟送达</div>
-            <div class="line3">
+            <div class="clearfix line3">
                 <img src="./images/decrease_1@2x.png" alt="" class="fl" width="12" height="12">
                 <span class="text fl">{{ this.seller.supports[0].description }}</span>
                 <span class="num fr" @click="showDetail">{{ this.seller.supports.length }}个 ></span>
@@ -122,7 +122,7 @@
                     margin-right: 2px;
                 }
                 .text{
-                    margin-right: 70px;
+                    margin-right: 50px;
                 }
                 .num{
                     width:43px;

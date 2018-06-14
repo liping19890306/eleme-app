@@ -8,6 +8,7 @@ import seller from '../components/seller/seller'
 
 
 export default new VRouter({
+	mode:'history',
     routes:[
         {
             path:'/',
